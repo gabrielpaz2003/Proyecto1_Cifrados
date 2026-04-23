@@ -1,0 +1,15 @@
+challenges/
+verify_challenges.py
+
+# Local environments and editor metadata
+.venv/
+.claude/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Temporary Office/system files
+~$*
+~WRL*.tmp
+*.tmp

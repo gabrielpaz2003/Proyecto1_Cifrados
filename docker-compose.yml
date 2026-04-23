@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  luffy_image:
+    build:
+      context: ./challenges/luffy
+      dockerfile: Dockerfile
+    container_name: luffy_challenge
+    command: ["tail", "-f", "/dev/null"]  # Esto evita que el contenedor se detenga
+    ports:
+      - "8081:8080"
+      - "2201:22"
+    networks:
+      - ctf_network
+  zoro_image:
+    build:
+      context: ./challenges/zoro
+      dockerfile: Dockerfile
+    container_name: zoro_challenge
+    command: ["tail", "-f", "/dev/null"]  # Esto evita que el contenedor se detenga
+    ports:
+      - "8082:8080"
+      - "2202:22"
+    networks:
+      - ctf_network  
+  nami_image:
+    build:
+      context: ./challenges/nami
+      dockerfile: Dockerfile
+    container_name: nami_challenge
+    command: ["tail", "-f", "/dev/null"]  # Esto evita que el contenedor se detenga
+    ports:
+      - "8083:8080"
+      - "2203:22"
+    networks:
+      - ctf_network
+  usopp_image:
+    build:
+      context: ./challenges/usopp
+      dockerfile: Dockerfile
+    container_name: usopp_challenge
+    command: ["tail", "-f", "/dev/null"]  # Esto evita que el contenedor se detenga
+    ports:
+      - "8084:8080"
+      - "2204:22"
+    networks:
+      - ctf_network
+
+networks:
+  ctf_network:
+    driver: bridge

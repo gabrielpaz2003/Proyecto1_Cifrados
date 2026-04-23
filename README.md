@@ -1,97 +1,112 @@
-# CTF One Piece - Symmetric Cipher
+# Proyecto 1 - CTF One Piece de cifrado simetrico
 
-Este proyecto es un CTF (Capture The Flag) temático de One Piece enfocado en criptografía simétrica. Cada desafío representa a un miembro de la tripulación y utiliza un método de cifrado diferente.
+Este repositorio contiene nuestro Proyecto 1 del curso Cifrado de Informacion. La entrega consiste en un CTF tematico de One Piece donde cada reto aplica un metodo de cifrado simetrico distinto y forma una ruta secuencial de resolucion.
 
-## 🏴‍☠️ Instrucciones Generales
+## Documento para revision
 
-1.  **Generar los desafíos:**
-    Ejecuta el script `generate_challenges.py` e ingresa tu carné de estudiante. Esto creará una estructura de directorios única para ti.
-    ```bash
-    python generate_challenges.py
-    ```
+El documento principal de entrega se encuentra en la carpeta `docs/`.
 
-2.  **Explorar el mapa:**
-    Dentro de la carpeta `challenges/`, encontrarás subcarpetas para cada personaje (Luffy, Zoro, Usopp, Nami). Dentro de cada una, hay un "laberinto" de carpetas con nombres de lugares de One Piece.
+Para la revision del catedratico, el archivo que debe consultarse es:
 
-3.  **Secuencia de Juego:**
-    **¡IMPORTANTE!** Los desafíos son secuenciales. La **FLAG** que encuentres en un desafío te servirá como **contraseña** para desbloquear el archivo ZIP del siguiente desafío.
-    
-    Orden de resolución:
-    1.  **Luffy** (Contraseña inicial: `onepiece`)
-    2.  **Zoro** (Contraseña: Flag de Luffy)
-    3.  **Usopp** (Contraseña: Flag de Zoro)
-    4.  **Nami** (Contraseña: Flag de Usopp)
+```text
+docs/proyecto1_reporte.pdf
+```
 
-## 🧩 Herramientas de Ayuda
+Ese reporte contiene la explicacion formal del proyecto, el diseno de los retos, las decisiones de implementacion y la documentacion de la solucion. El resto del repositorio funciona como material de apoyo, codigo fuente y recursos para reproducir el CTF.
 
-En la carpeta `utils/` encontrarás scripts que te ayudarán a resolver los retos.
--   `extract_text_from_image.py`: Utilidad para extraer y descifrar el texto oculto en los poneglyphs.
--   Scripts de cifrado específicos por personaje (`luffy_xor.py`, `zoro_rc4.py`, etc.).
+## Descripcion general
 
----
+El CTF genera una estructura de carpetas tipo laberinto dentro de `challenges/`. En cada reto se debe encontrar un `flag.txt` cifrado y un archivo ZIP con una imagen de poneglyph. Los retos son secuenciales: la flag obtenida en un reto sirve como contrasena para abrir el siguiente.
 
-## 🍖 Desafío 1: Monkey D. Luffy (XOR)
+Orden de resolucion:
 
-Luffy es directo, al igual que su cifrado.
+1. Luffy - XOR
+2. Zoro - RC4
+3. Usopp - stream cipher personalizado
+4. Nami - ChaCha20
 
-### Pasos:
-1.  **Buscar:** Encuentra el archivo `flag.txt` y el archivo zip del Poneglyph en `challenges/luffy/`.
-2.  **Poneglyph:**
-    -   Contraseña ZIP: `onepiece`.
-    -   Extrae la imagen y obtén el texto oculto en los metadatos EXIF.
-    -   Descifra con **XOR** usando tu carné.
-3.  **Flag:**
-    -   Descifra el `flag.txt` usando **XOR** con tu carné.
-    -   **Guarda esta flag**, la necesitarás para el siguiente reto.
+La contrasena inicial para el reto de Luffy es:
 
-## ⚔️ Desafío 2: Roronoa Zoro (RC4)
+```text
+onepiece
+```
 
-Zoro usa sus espadas en un flujo continuo.
+## Estructura del repositorio
 
-### Pasos:
-1.  **Buscar:** Localiza los archivos en `challenges/zoro/`.
-2.  **Poneglyph:**
-    -   Contraseña ZIP: **Flag de Luffy**.
-    -   Descifra el texto de la imagen con XOR (carné).
-3.  **Flag:**
-    -   Descifra `flag.txt` con **RC4**.
-    -   Clave: Tu **carné**.
-    -   Revisa `utils/zoro_rc4.py`.
+```text
+.
+|-- docs/                         Reporte final, pagina de apoyo e imagenes usadas en la documentacion
+|-- resources/                    Recursos para generar imagenes, carpetas, Dockerfiles y contenido del CTF
+|-- utils/                        Scripts auxiliares para cifrar, descifrar y extraer informacion
+|-- generate_challenges.py        Generador principal de los retos
+|-- docker-compose.yml            Configuracion para levantar los contenedores de los retos generados
+|-- GUIDE_*.md                    Guias individuales por personaje
+|-- GUIA_RESOLUCION_LINUX.md      Guia de resolucion en Linux
+|-- flags.txt                     Flags de referencia usadas para validacion
+|-- poneglyphs.txt                Texto base usado para los poneglyphs
+```
 
-## 🤥 Desafío 3: Usopp (Stream Cipher Custom)
+La carpeta `challenges/` no se versiona porque es generada localmente al ejecutar el proyecto.
 
-Usopp cuenta historias que a veces hay que descifrar.
+## Requisitos
 
-### Pasos:
-1.  **Buscar:** Localiza los archivos en `challenges/usopp/`.
-2.  **Poneglyph:**
-    -   Contraseña ZIP: **Flag de Zoro**.
-    -   Descifra el texto de la imagen con XOR (carné).
-3.  **Flag:**
-    -   Descifra `flag.txt` con el cifrado custom de Usopp.
-    -   Semilla: `1234`.
-    -   Revisa `utils/usopp_cipher.py`.
+Instalar las dependencias de Python:
 
-## 💰 Desafío 4: Nami (ChaCha20)
+```bash
+pip install -r resources/requirements.txt
+```
 
-Nami es sofisticada y moderna.
+Dependencias principales:
 
-### Pasos:
-1.  **Buscar:** Localiza los archivos en `challenges/nami/`.
-2.  **Poneglyph:**
-    -   Contraseña ZIP: **Flag de Usopp**.
-    -   Descifra el texto de la imagen con XOR (carné).
-3.  **Flag:**
-    -   Descifra `flag.txt` con **ChaCha20**.
-    -   Clave y Nonce derivados de tu **carné**.
-    -   Revisa `utils/nami_chacha.py`.
+```text
+Pillow
+numpy
+piexif
+pyzipper
+pycryptodome
+```
 
----
+## Generacion de retos
 
-## ⚠️ Notas Importantes
+Ejecutar:
 
--   **Archivos Falsos:** Hay imágenes que dicen "Este poneglyph no es el que buscas". Ignóralas.
--   **Librerías:** Asegúrate de instalar las dependencias:
-    ```bash
-    pip install -r resources/requirements.txt
-    ```
+```bash
+python generate_challenges.py
+```
+
+El programa solicita el carne del estudiante y genera una version personalizada de los retos en `challenges/`.
+
+## Ejecucion con Docker
+
+Luego de generar los retos, se pueden levantar los contenedores con:
+
+```bash
+docker compose up --build
+```
+
+Servicios configurados:
+
+```text
+luffy_challenge   -> 8081 / 2201
+zoro_challenge    -> 8082 / 2202
+nami_challenge    -> 8083 / 2203
+usopp_challenge   -> 8084 / 2204
+```
+
+## Guias y material de apoyo
+
+Las guias por personaje se encuentran en:
+
+```text
+GUIDE_LUFFY.md
+GUIDE_ZORO.md
+GUIDE_USOPP.md
+GUIDE_NAMI.md
+GUIA_RESOLUCION_LINUX.md
+```
+
+Las utilidades para resolver o validar los cifrados estan en `utils/`, incluyendo implementaciones de XOR, RC4, el cifrado personalizado de Usopp, ChaCha20 y extraccion de metadatos EXIF desde las imagenes.
+
+## Nota final
+
+Para efectos de evaluacion, favor tomar como documento principal el reporte ubicado en `docs/proyecto1_reporte.pdf`.
